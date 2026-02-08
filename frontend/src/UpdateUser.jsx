@@ -3,11 +3,24 @@ import axios from 'axios';
 import { useState,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 function UpdateUser() {
+    const {id} = useParams();
     const [name,setName] = useState('');
     const [email,setEmail] = useState('');
     const [age,setAge] = useState('');  
     const navigate = useNavigate();
-    const {id} = useParams();
+    useEffect(() => {
+        const getUser = async () => {
+            try {       
+                const res = await axios.get(`/api/users/${id}`);
+                setName(res.data.name);
+                setEmail(res.data.email);
+                setAge(res.data.age);
+            } catch (err) {
+                console.error(err);
+            }           
+        }
+        getUser();
+    }, [id])
 
      const handleSubmit = async (e) => {    
         e.preventDefault();
@@ -18,6 +31,7 @@ function UpdateUser() {
         catch (err) {
             console.error(err);
         }
+        
     }
     
   return (

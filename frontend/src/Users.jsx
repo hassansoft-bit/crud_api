@@ -16,7 +16,16 @@ function Users() {
         }
         getUsers();
     }, [])  
-
+     
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`/api/users/${id}`);
+            setUsers(users.filter(user => user.id !== id));
+        }   catch (err) {       
+            console.error(err);
+        }   
+    }
+    
        
   return (
     <div className='d-flex vh-100 bg-primary justify-content-center align-items-center'>
@@ -42,7 +51,7 @@ function Users() {
                          <td>{user.age}</td>
                         <td>
                           <Link to={`/update/${user.id}`} className='btn btn-success' >Update</Link>
-                        <button className='btn btn-danger ms-2'>Delete</button>
+                        <button className='btn btn-danger ms-2' onClick={(e) => handleDelete(user.id)}>Delete</button>
                          </td>
                       </tr>
             ))}
